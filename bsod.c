@@ -79,7 +79,7 @@ int main() {
             if (SUCCEEDED(hRes)) {
                 hRes = CoCreateInstance(&CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, &IID_IShellLink, (LPVOID*)&psl);
                 if (SUCCEEDED(hRes)) {
-                    psl->SetPath(exePath);
+                    psl->SetPath(exePath);  // Correct method to set path
                     psl->SetArguments("");
                     IPersistFile* ppf;
                     hRes = psl->QueryInterface(IID_IPersistFile, (LPVOID*)&ppf);
