@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <shlobj.h>  // For SHGetFolderPath
 #include <string.h>   // For strcat
+#include <objbase.h>  // For CoInitialize, CoCreateInstance
 
 #define REGISTRY_KEY "Software\\MyProgram"  // Registry key to track first run
 
@@ -72,6 +73,7 @@ int main() {
             
             // Create a shortcut in the Startup folder
             strcat(szPath, "\\MyProgram.lnk");
+            
             HRESULT hRes;
             IShellLink* psl;
 
@@ -80,7 +82,8 @@ int main() {
                 hRes = CoCreateInstance(&CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, &IID_IShellLink, (LPVOID*)&psl);
                 if (SUCCEEDED(hRes)) {
                     psl->SetPath(exePath);  // Correct method to set path
-                    psl->SetArguments("");
+                    psl->SetArguments("");  // No arguments needed
+                    
                     IPersistFile* ppf;
                     hRes = psl->QueryInterface(IID_IPersistFile, (LPVOID*)&ppf);
                     if (SUCCEEDED(hRes)) {
