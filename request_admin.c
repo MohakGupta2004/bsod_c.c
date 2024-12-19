@@ -9,7 +9,7 @@ void RunTaskkillProgram() {
     sei.fMask = SEE_MASK_NOCLOSEPROCESS;
     sei.hwnd = NULL;
     sei.lpVerb = "runas";  // Request elevation
-    sei.lpFile = "taskkill_program.exe";  // The name of the taskkill program
+    sei.lpFile = "a.exe";  // The name of the taskkill program
     sei.lpParameters = "";  // Add any parameters if needed
     sei.nShow = SW_SHOWNORMAL;
 
